@@ -29,6 +29,47 @@ async function getMovieById(req, res, next) {
   }
 }
 
+async function updateMovie(req, res, next) {
+  const id = req.params.id;
+
+  try {
+    const isValidId = ObjectId.isValid(id);
+    if (!isValidId) throw createHttpError(400, "Invalid movie id");
+
+    const {
+      moviePoster,
+      movieTitle,
+      genre,
+      duration,
+      releaseYear,
+      rating,
+      summary,
+    } = req.body;
+
+    const changedFields = {
+      ...(moviePoster && { moviePoster }),
+      ...(movieTitle && { movieTitle }),
+      ...(genre && { genre }),
+      ...(duration && { duration }),
+      ...(releaseYear && { releaseYear }),
+      ...(rating && { rating }),
+      ...(summary && { summary }),
+    };
+
+    const updatedMovie = await moviesCollection.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: changedFields },
+      { returnDocument: "after" }
+    );
+
+    if (!updatedMovie) throw createHttpError(404, "Movie not found");
+
+    res.status(200).json(updatedMovie.value);
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function deleteMovie(req, res, next) {
   const id = req.params.id;
 
@@ -51,4 +92,5 @@ module.exports = {
   getAllMovies,
   getMovieById,
   deleteMovie,
+  updateMovie,
 };

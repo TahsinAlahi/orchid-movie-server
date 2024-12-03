@@ -6,6 +6,7 @@ router.route("/").get(moviesController.getAllMovies);
 router
   .route("/:id")
   .get(moviesController.getMovieById)
-  .delete(moviesController.deleteMovie);
+  .delete(moviesController.deleteMovie)
+  .patch(moviesController.updateMovie);
 
 module.exports = router;
