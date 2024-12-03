@@ -29,6 +29,37 @@ async function getMovieById(req, res, next) {
   }
 }
 
+async function createMovie(req, res, next) {
+  try {
+    const {
+      moviePoster,
+      movieTitle,
+      genre,
+      duration,
+      releaseYear,
+      rating,
+      summary,
+    } = req.body;
+
+    if (
+      !moviePoster ||
+      !movieTitle ||
+      !genre ||
+      !duration ||
+      !releaseYear ||
+      !rating ||
+      !summary
+    )
+      throw createHttpError(400, "Missing required fields");
+
+    await moviesCollection.insertOne(req.body);
+
+    res.status(201).json(req.body);
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function updateMovie(req, res, next) {
   const id = req.params.id;
 
@@ -91,6 +122,7 @@ async function deleteMovie(req, res, next) {
 module.exports = {
   getAllMovies,
   getMovieById,
+  createMovie,
   deleteMovie,
   updateMovie,
 };
