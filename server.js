@@ -1,9 +1,6 @@
 const app = require("./app");
 const port = process.env.PORT || 5000;
-const mongoUri = process.env.MONGO_URI;
-const { MongoClient } = require("mongodb");
-
-const client = new MongoClient(mongoUri);
+const { client } = require("./database");
 
 client
   .connect()
