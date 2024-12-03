@@ -8,8 +8,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use("/api/movies", require("./routes/movies.route"));
 
 module.exports = app;
