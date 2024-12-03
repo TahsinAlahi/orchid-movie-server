@@ -7,7 +7,7 @@ async function getAllMovies(req, res, next) {
     const cursor = moviesCollection.find();
     const movies = await cursor.toArray();
 
-    res.status(200).send(movies);
+    res.status(200).json(movies);
   } catch (error) {
     next(error);
   }
@@ -23,7 +23,7 @@ async function getMovieById(req, res, next) {
 
     if (!movie) throw createHttpError(404, "Movie not found");
 
-    res.status(200).send(movie);
+    res.status(200).json(movie);
   } catch (error) {
     next(error);
   }
