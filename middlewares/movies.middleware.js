@@ -29,7 +29,26 @@ async function getMovieById(req, res, next) {
   }
 }
 
+async function deleteMovie(req, res, next) {
+  const id = req.params.id;
+
+  try {
+    const isValidId = ObjectId.isValid(id);
+    if (!isValidId) throw createHttpError(400, "Invalid movie id");
+
+    const result = await moviesCollection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0)
+      throw createHttpError(404, "Movie not found");
+
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getAllMovies,
   getMovieById,
+  deleteMovie,
 };
