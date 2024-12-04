@@ -6,6 +6,8 @@ router
   .get(moviesController.getAllMovies)
   .post(moviesController.createMovie);
 
+router.route("/top-rated").get(moviesController.getTopRatedMovies);
+
 router
   .route("/:id")
   .get(moviesController.getMovieById)

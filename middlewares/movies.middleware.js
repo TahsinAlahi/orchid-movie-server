@@ -29,6 +29,17 @@ async function getMovieById(req, res, next) {
   }
 }
 
+async function getTopRatedMovies(req, res, next) {
+  try {
+    const cursor = moviesCollection.find().sort({ rating: -1 }).limit(6);
+    const topMovies = await cursor.toArray();
+
+    res.status(200).json(topMovies);
+  } catch (error) {
+    next;
+  }
+}
+
 async function createMovie(req, res, next) {
   try {
     const {
@@ -125,4 +136,5 @@ module.exports = {
   createMovie,
   deleteMovie,
   updateMovie,
+  getTopRatedMovies,
 };
