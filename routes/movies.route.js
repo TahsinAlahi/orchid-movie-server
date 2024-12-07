@@ -8,6 +8,8 @@ router
 
 router.route("/top-rated").get(moviesController.getTopRatedMovies);
 
+router.route("/favorites").post(moviesController.postFavoriteMovie);
+
 router
   .route("/:id")
   .get(moviesController.getMovieById)

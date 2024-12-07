@@ -50,6 +50,8 @@ async function createMovie(req, res, next) {
       releaseYear,
       rating,
       summary,
+      email,
+      username,
     } = req.body;
 
     if (
@@ -59,7 +61,9 @@ async function createMovie(req, res, next) {
       !duration ||
       !releaseYear ||
       !rating ||
-      !summary
+      !summary ||
+      !email ||
+      !username
     )
       throw createHttpError(400, "Missing required fields");
 
@@ -130,6 +134,8 @@ async function deleteMovie(req, res, next) {
   }
 }
 
+async function postFavoriteMovie(req, res, next) {}
+
 module.exports = {
   getAllMovies,
   getMovieById,
@@ -137,4 +143,5 @@ module.exports = {
   deleteMovie,
   updateMovie,
   getTopRatedMovies,
+  postFavoriteMovie,
 };
