@@ -1,4 +1,5 @@
 const { usersCollection } = require("../database");
+const createHttpError = require("http-errors");
 const { ObjectId } = require("mongodb");
 
 async function postFavoriteMovie(req, res, next) {
@@ -37,4 +38,32 @@ async function postFavoriteMovie(req, res, next) {
   }
 }
 
-module.exports = { postFavoriteMovie };
+async function getFavoriteMovies(req, res, next) {
+  try {
+    const { email: userEmail } = req.params;
+    const user = await usersCollection.findOne({ userEmail: userEmail });
+    if (user === null) throw createHttpError(404, "User not found");
+
+    const userWithFavorites = await usersCollection
+      .aggregate([
+        {
+          $match: { userEmail: userEmail },
+        },
+        {
+          $lookup: {
+            from: "movies",
+            localField: "favoriteMovies",
+            foreignField: "_id",
+            as: "favoriteMovies",
+          },
+        },
+      ])
+      .toArray();
+
+    res.status(200).json(userWithFavorites);
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { postFavoriteMovie, getFavoriteMovies };
