@@ -134,8 +134,6 @@ async function deleteMovie(req, res, next) {
   }
 }
 
-async function postFavoriteMovie(req, res, next) {}
-
 module.exports = {
   getAllMovies,
   getMovieById,
@@ -143,5 +141,4 @@ module.exports = {
   deleteMovie,
   updateMovie,
   getTopRatedMovies,
-  postFavoriteMovie,
 };
