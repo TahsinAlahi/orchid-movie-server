@@ -18,6 +18,17 @@ async function postFavoriteMovie(req, res, next) {
       { upsert: true, returnDocument: "after" }
     );
 
+    if (user === null) throw createHttpError(404, "User not found");
+
+    const existingUser = await usersCollection.findOne({
+      userEmail: userEmail,
+      favoriteMovies: new ObjectId(movieId),
+    });
+
+    if (existingUser) {
+      throw createHttpError(400, "Movie is already in favorites");
+    }
+
     const updatedUser = await usersCollection.findOneAndUpdate(
       {
         userEmail: userEmail,
