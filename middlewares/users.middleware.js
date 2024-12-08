@@ -69,7 +69,8 @@ async function getFavoriteMovies(req, res, next) {
           },
         },
       ])
-      .toArray();
+      .toArray()
+      .then((result) => result[0]);
 
     res.status(200).json(userWithFavorites);
   } catch (error) {
